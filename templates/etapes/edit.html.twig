@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une Etape{% endblock %}
+
+{% block body %}
+    <h1>Modifier une Etapes</h1>
+
+    {{ include('etapes/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a class="btn btn-primary" href="{{ path('etapes_index') }}">Revenir à la liste</a>
+
+    {{ include('etapes/_delete_form.html.twig') }}
+{% endblock %}

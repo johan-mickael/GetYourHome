@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <div id="main-wrapper" class="row g-0">
+            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-1">
+                {{ include('sidebar.html.twig') }}
+            </div>
+            
+            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-11 g-2">
+                <div class="container-fluid">
+                    {% block body %}{% endblock %} 
+                </div>
+                
+            </div>
+            
+        </div>
+        {% block javascript %}{% endblock %}
+    </body>
+    
+    
+</html>

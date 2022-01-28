@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients index{% endblock %}
+
+{% block body %}
+    <h1>Clients index</h1>
+
+    <a class="btn btn-primary" href="{{ path('clients_new') }}">Ajouter un Utilisateur</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>DateNaissance</th>
+                <th>Adresse</th>
+                <th>CodePostale</th>
+                <th>Ville</th>
+                <th>Telephone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for client in clients %}
+            <tr>
+                <td>{{ client.id }}</td>
+                <td>{{ client.nom }}</td>
+                <td>{{ client.prenom }}</td>
+                <td>{{ client.dateNaissance ? client.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ client.adresse }}</td>
+                <td>{{ client.codePostale }}</td>
+                <td>{{ client.ville }}</td>
+                <td>{{ client.telephone }}</td>
+                <td>
+                    <a href="{{ path('clients_show', {'id': client.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('clients_edit', {'id': client.id}) }}"><i class="fas fa-edit"></i></a>
+					{% include "clients/_delete_button.html.twig" %}
+                    {# <a href="{{ path('clients_delete', {'id': client.id}) }}"><i class="fas fa-trash-alt"></i></a> #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">Aucun résultat</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

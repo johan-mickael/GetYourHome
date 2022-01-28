@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Documents{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un Documents</h1>
+
+    {{ include('documents/_form.html.twig') }}
+
+    <a class="btn btn-primary" href="{{ path('documents_index') }}">Revenir à la liste</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Etape{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une Etape</h1>
+
+    {{ include('etapes/_form.html.twig') }}
+
+    <a class="btn btn-primary" href="{{ path('etapes_index') }}">Revenir à la liste</a>
+{% endblock %}

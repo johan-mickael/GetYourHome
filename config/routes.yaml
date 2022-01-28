@@ -1,0 +1,14 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+
+homepage:
+  path: /
+  controller: App\Controller\LoginController::login
+  defaults:
+    path: /app_login
+    permanent: true
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation
