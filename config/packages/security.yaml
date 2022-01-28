@@ -41,8 +41,7 @@ security:
         - { path: ^/projets/[0-9]+/edit, roles: ROLE_ADMIN }
         - { path: ^/projets/[0-9]+, roles: ROLE_ADMIN, methods: [POST, DELETE] }
         - { path: ^/projets/new, roles: ROLE_ADMIN }
-        - { path: ^/projets, roles: ROLE_USER }
-        - { path: ^/clients, roles: ROLE_USER }
+        - { path: ^/projets/upload, roles: ROLE_CLIENT }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

@@ -4,6 +4,7 @@
 namespace App\Service;
 
 use App\Entity\Projets;
+use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -19,17 +20,17 @@ class FileUploader
 		$this->slugger = $slugger;
 	}
 
-	public function upload(UploadedFile $file, Projets $projet)
+	public function upload(UploadedFile $file, array $options)
 	{
 		$originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 		// this is needed to safely include the file name as part of the URL
-		$safeFilename = $this->slugger->slug($originalFilename);
-		$newFileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+		$safeFilename = $this->slugger->slug($options['filename']);
+		$newFileName = $safeFilename . '.' . $file->guessExtension();
 
 		// Move the file to the directory where brochures are stored
 		try {
 			$file->move(
-				$this->getTargetDirectory() . $projet->getDocumentsPath(),
+				$this->getTargetDirectory() . $options['projet']->getDocumentsPath(),
 				$newFileName
 			);
 		} catch (FileException $e) {

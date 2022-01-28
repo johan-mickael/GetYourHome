@@ -17,7 +17,6 @@ class ProjetsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $etapes = $options['data']->getEtapes();
         $builder
             ->add('nom')
             ->add('dateDebut', DateType::class, [
@@ -42,7 +41,6 @@ class ProjetsType extends AbstractType
                 'choice_label' => 'libelle',
                 'multiple' => true,
                 'expanded' => true,
-
             ])
         ;
     }

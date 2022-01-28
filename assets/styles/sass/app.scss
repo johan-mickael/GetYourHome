@@ -2,7 +2,7 @@
 @import "commons/_variables";
 @import "commons/sidebar";
 @import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid'; 
+@import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
 
@@ -16,25 +16,16 @@ a{
 	transition: color 75ms ease-in-out;
 	width: 100%;
 	display: inline-block;
-	padding: 10px 0;
 }
 a:hover {
 	color:$link-color-hover;
 	text-decoration: none;
 }
 
-a.btn {
-	width:15%;
-	margin:5px 0;
-}
-
 .client {
 	color:#f783ac;
 }
 
-.table > tbody > tr > td > a {
-	width: 20%;
-}
 
 .table > tbody > tr > td > a:hover {
 	color:$link-table-color-hover;

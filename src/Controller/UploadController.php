@@ -6,6 +6,7 @@ use App\Entity\Documents;
 use App\Entity\Projets;
 use App\Form\UploadType;
 use App\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,19 +17,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends AbstractController
 {
 	#[Route('/{id}', name: 'index', methods: ['GET', 'POST'])]
-	public function index(ManagerRegistry $doctrine, Request $request, Projets $projet, FileUploader $fileUploader): Response
+	public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, Request $request, Projets $projet, FileUploader $fileUploader): Response
 	{
 		$allDocuments = $doctrine->getRepository(Documents::class)->findAll();
-		$form = $this->createForm(UploadType::class, [$projet, $allDocuments]);
+		$notSubmittedDocument = $projet->getNotSubmittedDocuments($allDocuments);
+		if (empty($notSubmittedDocument))
+			return $this->redirectToRoute('projets_index');
+
+
+		$form = $this->createForm(UploadType::class, [$projet, $notSubmittedDocument]);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			$brochureFile = $form->get('test')->getData();
-			if ($brochureFile) {
-				$brochureFileName = $fileUploader->upload($brochureFile, $projet);
-				// $product->setBrochureFilename($brochureFileName);
+			foreach ($notSubmittedDocument as $doc) {
+				$brochureFile = $form->get($doc->getId())->getData();
+				if ($brochureFile) {
+					$brochureFileName = $fileUploader->upload($brochureFile, [
+						'projet' => $projet,
+						'filename' => $doc->getName()
+					]);
+					$projet->addDocument($doc);
+				}
 			}
-			return $this->redirectToRoute('upload_index', ['id' => $projet->getId()]);
+			$entityManager->persist($projet);
+			$entityManager->flush();
+
+			return $this->render('projets/upload/success.html.twig', [
+				'projet' => $projet
+			]);
 		}
 
 		return $this->render('projets/upload/index.html.twig', [

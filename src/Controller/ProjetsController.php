@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Documents;
 use App\Entity\Projets;
+use App\Form\DocumentsProjetType;
+use App\Form\EtapesProjetType;
 use App\Form\ProjetsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,17 +27,26 @@ class ProjetsController extends AbstractController
 	#[Route('/', name: 'index', methods: ['GET'])]
 	public function index(ManagerRegistry $doctrine): Response
 	{
-
-		$projets = $doctrine->getRepository(Projets::class)->findAll();
 		if ($this->user && $this->user->isAdmin())
 			$projets = $doctrine->getRepository(Projets::class)->findAll();
 		else {
 			$projets = $this->user->getClients()->getProjets();
 		}
 
+		$forms = array();
+		$allDocumentsAreSubmitted = array();
+		$allDocuments = $doctrine->getRepository(Documents::class)->findAll();
+
+		foreach ($projets as $projet) {
+			$forms['documents'][] = $this->createForm(DocumentsProjetType::class, $projet)->createView();
+			$allDocumentsAreSubmitted[] = $projet->allDocumentsAreSubmitted($allDocuments);
+			$forms['etapes'][] = $this->createForm(EtapesProjetType::class, $projet)->createView();
+		}
 
 		return $this->render('projets/index.html.twig', [
 			'projets' => $projets,
+			'forms' => $forms,
+			'done' => $allDocumentsAreSubmitted
 		]);
 	}
 

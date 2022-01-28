@@ -1,0 +1,48 @@
+<h1>Tous les projets.</h1>
+<a class="btn btn-primary" href="{{ path('projets_new') }}">Créer un projet</a>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Statut du projet</th>
+			<th>Id</th>
+			<th>Nom</th>
+			<th>DateDebut</th>
+			<th>DateFin</th>
+			<th>Client</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for projet in projets %}
+		{% if projet.etat.id is defined and projet.etat.id == 1 %}
+		{% set colorClass = 'text-warning' %}
+		{% elseif projet.etat.id is defined and projet.etat.id == 2 %}
+		{% set colorClass = 'client' %}
+		{% else %}
+		{% set colorClass = 'text-success' %}
+		{% endif %}
+		<tr>
+			<td>
+				<i class="fas fa-circle {{colorClass}}"></i>
+				{% if projet.etat.libelle is defined %}
+				{{ projet.etat.libelle }}
+				{% endif %}
+			</td>
+			<td>{{ projet.id }}</td>
+			<td>{{ projet.nom }}</td>
+			<td>{{ projet.dateDebut ? projet.dateDebut|date('Y-m-d') : '' }}</td>
+			<td>{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : '' }}</td>
+			<td>{{ projet.client.nom }} {{ projet.client.prenom }}</td>
+			<td>
+				<a href="{{ path('projets_show', {'id': projet.id}) }}"><i class="fas fa-eye"></i></a>
+				<a href="{{ path('projets_edit', {'id': projet.id}) }}"><i class="fas fa-edit"></i></a>
+				<a href="{{ path('projets_delete', {'id': projet.id}) }}"><i class="fas fa-trash"></i></a>
+			</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="6">no records found</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
