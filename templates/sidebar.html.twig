@@ -8,6 +8,7 @@
 	</div>
 	{% endif %}
 	<div class="menu">
+		{% if app.user %}
 		<ul>
 			<li>
 				<a href="{{ path('projets_index') }}">
@@ -21,6 +22,8 @@
 					</div>
 				</a>
 			</li>
+
+			{% if app.user.isEmployee() %}
 			<li>
 				<a href="{{ path('clients_index') }}">
 					<div class="row">
@@ -33,6 +36,21 @@
 					</div>
 				</a>
 			</li>
+			{% else %}
+			<li>
+				<a href="{{ path('clients_show', {'id': app.user.clients.id}) }}">
+					<div class="row">
+						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1">
+							<i class="fas fa-cogs"></i>
+						</div>
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-11">
+							<span>Mon compte</span>
+						</div>
+					</div>
+				</a>
+			</li>
+			{% endif %}
 		</ul>
+		{% endif %}
 	</div>
 </section>

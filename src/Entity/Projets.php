@@ -194,14 +194,23 @@ class Projets
 		return $size === $this->documents->count();
 	}
 
-	public function getNotSubmittedDocuments($allDocuments)
+	public function getSubmittedDocuments($allDocuments, $submitted = true)
 	{
 		$res = array();
-		foreach ($allDocuments as $doc) {
-			if (!in_array($doc, $this->documents->toArray())) {
-				$res[] = $doc;
+		if ($submitted) {
+			foreach ($allDocuments as $doc) {
+				if (in_array($doc, $this->documents->toArray())) {
+					$res[] = $doc;
+				}
+			}
+		} else {
+			foreach ($allDocuments as $doc) {
+				if (!in_array($doc, $this->documents->toArray())) {
+					$res[] = $doc;
+				}
 			}
 		}
+
 		return $res;
 	}
 }

@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Security\Core\Security;
 
 class ClientsType extends AbstractType
 {
@@ -17,7 +19,9 @@ class ClientsType extends AbstractType
 
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$action = $options["data"]->getUser() ? self::ACTION[1] : self::ACTION[0];
+		$authUser = $options["data"];
+		$user = $options["data"]->getUser();
+		$action = $user ? self::ACTION[1] : self::ACTION[0];
 		$email = strcmp(self::ACTION[1], $action) == 0 ? $options["data"]->getUser()->getEmail() : '';
 		$builder
 			->add('email', EmailType::class, [
@@ -25,7 +29,14 @@ class ClientsType extends AbstractType
 				'required' => true,
 				'data' => $email
 			]);
-
+		if ($user->isEmployee()) {
+			$builder
+				->add('roles', TextType::class, [
+					'mapped' => false,
+					'required' => true,
+					'data' => $email
+				]);
+		}
 		if (strcmp(self::ACTION[0], $action) == 0)
 			$builder
 				->add('password', PasswordType::class, [

@@ -3,6 +3,17 @@
 {% block title %}{{projet.nom}}{% endblock %}
 
 {% block body %}
-<h1>{{projet.nom}}</h1>
-Success !
+<a href="{{path('upload_index', {'id': projet.id})}}">Retour</a>
+<a href="{{path('projets_index')}}">Mes projets</a>
+<h2>Justificatifs: {{projet.nom|upper}}</h2>
+{% if submitted %}
+{% endif %}
+{% for doc in submitted %}
+<li class="text-success"><i class="fas fa-check"></i> {{doc.name}}</li>
+{% endfor %}
+{% if notSubmitted %}
+{% endif %}
+{% for doc in notSubmitted %}
+<li class="text-danger"> <i class="fas fa-times"></i> {{doc.name}}</li>
+{% endfor %}
 {% endblock %}

@@ -36,6 +36,12 @@ class ProjetsType extends AbstractType
                 'class' => ProjetsEtat::class,
                 'choice_label' => 'libelle'
             ])
+			->add('documents', EntityType::class, [
+                'class' => Documents::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+            ])
             ->add('etapes', EntityType::class, [
                 'class' => Etapes::class,
                 'choice_label' => 'libelle',

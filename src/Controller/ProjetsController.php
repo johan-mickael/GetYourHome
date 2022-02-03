@@ -27,7 +27,7 @@ class ProjetsController extends AbstractController
 	#[Route('/', name: 'index', methods: ['GET'])]
 	public function index(ManagerRegistry $doctrine): Response
 	{
-		if ($this->user && $this->user->isAdmin())
+		if ($this->user && $this->user->isEmployee())
 			$projets = $doctrine->getRepository(Projets::class)->findAll();
 		else {
 			$projets = $this->user->getClients()->getProjets();
@@ -73,9 +73,15 @@ class ProjetsController extends AbstractController
 	#[Route('/{id}', name: 'show', methods: ['GET'])]
 	public function show(Projets $projet): Response
 	{
-		return $this->render('projets/show.html.twig', [
-			'projet' => $projet,
-		]);
+		if (!$this->user->isEmployee() && $this->user->getClients()->getId() !== $projet->getClient()->getId()) {
+			return $this->redirectToRoute('projets_index');
+		}
+		$forms = array();
+
+		$form['documents'] = $this->createForm(DocumentsProjetType::class, $projet)->createView();
+		$form['etapes'] = $this->createForm(EtapesProjetType::class, $projet)->createView();
+
+		return $this->render('projets/show.html.twig', compact('projet', 'form'));
 	}
 
 	#[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
@@ -86,8 +92,7 @@ class ProjetsController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->flush();
-
-			return $this->redirectToRoute('projets_index');
+			return $this->redirectToRoute('projets_edit', ['id' => $projet->getId()]);
 		}
 
 		return $this->render('projets/edit.html.twig', [

@@ -3,7 +3,7 @@
 {% block title %}Projets index{% endblock %}
 
 {% block body %}
-{% if app.user.isAdmin() %}
+{% if app.user.isEmployee() %}
 {% include "projets/dashboard/admin.html.twig" %}
 {% else %}
 {% include "projets/dashboard/client.html.twig" %}

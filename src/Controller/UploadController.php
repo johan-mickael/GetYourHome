@@ -20,10 +20,9 @@ class UploadController extends AbstractController
 	public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, Request $request, Projets $projet, FileUploader $fileUploader): Response
 	{
 		$allDocuments = $doctrine->getRepository(Documents::class)->findAll();
-		$notSubmittedDocument = $projet->getNotSubmittedDocuments($allDocuments);
+		$notSubmittedDocument = $projet->getSubmittedDocuments($allDocuments, false);
 		if (empty($notSubmittedDocument))
 			return $this->redirectToRoute('projets_index');
-
 
 		$form = $this->createForm(UploadType::class, [$projet, $notSubmittedDocument]);
 		$form->handleRequest($request);
@@ -43,7 +42,9 @@ class UploadController extends AbstractController
 			$entityManager->flush();
 
 			return $this->render('projets/upload/success.html.twig', [
-				'projet' => $projet
+				'projet' => $projet,
+				'submitted' => $projet->getSubmittedDocuments($allDocuments),
+				'notSubmitted' => $projet->getSubmittedDocuments($allDocuments, false)
 			]);
 		}
 

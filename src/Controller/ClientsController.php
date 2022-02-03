@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Clients;
 use App\Entity\User;
 use App\Form\ClientsType;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,6 @@ class ClientsController extends AbstractController
 	#[Route('/new', name: 'new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
 	{
-
 		$client = new Clients();
 		$form = $this->createForm(ClientsType::class, $client);
 
@@ -86,13 +86,20 @@ class ClientsController extends AbstractController
 		]);
 	}
 
-
-	#[Route('/{id}', name: 'delete', methods: ['POST'])]
+	#[Route('/{id}', name: 'delete', methods: ['POST', 'DELETE'])]
 	public function delete(Request $request, Clients $client, EntityManagerInterface $entityManager): Response
 	{
 		if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
-			$entityManager->remove($client);
-			$entityManager->flush();
+			try {
+				$entityManager->remove($client);
+				$entityManager->flush();
+			} catch (ForeignKeyConstraintViolationException $ex) {
+				$this->addFlash(
+					'message',
+					'Impossible de supprimer un client possedant un projet.'
+				);
+				return $this->redirectToRoute('clients_index');
+			}
 		}
 
 		return $this->redirectToRoute('clients_index');

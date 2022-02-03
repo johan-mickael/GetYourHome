@@ -165,4 +165,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		}
 		return false;
 	}
+
+	public function isEmployee(): bool
+	{
+		foreach ($this->roles as $role) {
+			if (strcmp($role, 'ROLE_EMPLOYEE') == 0 || strcmp($role, 'ROLE_ADMIN') == 0)
+				return true;
+		}
+		return false;
+	}
 }
