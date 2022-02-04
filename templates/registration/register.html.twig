@@ -1,15 +1,20 @@
-{% extends 'unauthenticated.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Employé{% endblock %}
 
 {% block body %}
-<h1>Register</h1>
 
-{{ form_start(registrationForm) }}
-{{ form_row(registrationForm.email) }}
-{{ form_row(registrationForm.plainPassword, {
-label: 'Password'
-}) }}
-<button type="submit" class="btn">Register</button>
-{{ form_end(registrationForm) }}
+<div class="border p-4 w-50">
+	<h3>Ajouter un employé</h3>
+	{{ form_start(registrationForm) }}
+	<label>Email</label>
+	{{ form_widget(registrationForm.email) }}
+	{{ form_errors(registrationForm.email) }}
+	<label>Mot de passe</label>
+	{{ form_widget(registrationForm.plainPassword) }}
+	{{ form_errors(registrationForm.plainPassword) }}
+	<button type="submit" class="mt-2 btn btn-primary">Ajouter</button>
+	{{ form_end(registrationForm) }}
+</div>
+
 {% endblock %}
