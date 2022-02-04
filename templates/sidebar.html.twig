@@ -50,6 +50,44 @@
 				</a>
 			</li>
 			{% endif %}
+			{% if app.user.isAdmin() %}
+			<li>
+				<a href="{{ path('app_register') }}">
+					<div class="row">
+						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1">
+							<i class="fas fa-plus"></i>
+						</div>
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-11">
+							<span>Employé</span>
+						</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="{{ path('documents_index') }}">
+					<div class="row">
+						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1">
+							<i class="fas fa-envelope"></i>
+						</div>
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-11">
+							<span>Documents</span>
+						</div>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="{{ path('etapes_index') }}">
+					<div class="row">
+						<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1">
+							<i class="fas fa-envelope"></i>
+						</div>
+						<div class="col-xl-10 col-lg-10 col-md-10 col-sm-11">
+							<span>Etapes</span>
+						</div>
+					</div>
+				</a>
+			</li>
+			{% endif %}
 		</ul>
 		{% endif %}
 	</div>

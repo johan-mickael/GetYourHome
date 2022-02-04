@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 #[Route('/etapes', name:'etapes_')]
 class EtapesController extends AbstractController
 {
+	// Liste des étapes
     #[Route('/', name:'index', methods:['GET'])]
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -24,6 +25,7 @@ class EtapesController extends AbstractController
         ]);
     }
 
+	// Ajouter un nouvel étape
     #[Route('/new', name:'new', methods:['GET','POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -44,6 +46,7 @@ class EtapesController extends AbstractController
         ]);
     }
 
+	// Affichage d'un étape
     #[Route('/{id}', name:'show', methods:['GET'])]
     public function show(Etapes $etape): Response
     {
@@ -52,6 +55,7 @@ class EtapesController extends AbstractController
         ]);
     }
 
+	// Modification d'un étape
     #[Route('/{id}/edit', name:'edit', methods:['GET','POST'])]
     public function edit(Request $request, Etapes $etape, EntityManagerInterface $entityManager): Response
     {
@@ -70,6 +74,7 @@ class EtapesController extends AbstractController
         ]);
     }
 
+	// Suppression d'un étape
     #[Route('/{id}', name:'delete', methods:['POST', 'DELETE'])]
     public function delete(Request $request, Etapes $etape, EntityManagerInterface $entityManager): Response
     {

@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Entity;
 
+use App\Service\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Projets
@@ -109,6 +115,10 @@ class Projets
 
 	public function setDateFin(?\DateTimeInterface $dateFin): self
 	{
+		// Verification si la date de fin du projet est valide par rapport à la date du début du projet
+		if ($this->dateDebut > $dateFin)
+			throw new Exception("La date de fin du projet doit être supérieure à la date de début");
+
 		$this->dateFin = $dateFin;
 		return $this;
 	}
@@ -180,24 +190,24 @@ class Projets
 		return $this;
 	}
 
+	// Chemin du dossier dans laquelle on va stocker les documents reliés au projet
 	public function getDocumentsPath(): string
 	{
 		return '/' . $this->client->getUser()->getEmail() . '/' . $this->getNom();
 	}
 
+	// Verification si tous les documents reliés à ce projet sont transmis par le client
 	public function allDocumentsAreSubmitted($allDocuments): bool
 	{
-		$size = 0;
-		foreach ($allDocuments as $document) {
-			$size++;
-		}
-		return $size === $this->documents->count();
+		return count($allDocuments) === $this->documents->count();
 	}
 
-	public function getSubmittedDocuments($allDocuments, $submitted = true)
+	// Retourne tous les documents transmis ou non par le client reliés à ce projet
+	public function _getDocuments($allDocuments, $submitted = true)
 	{
 		$res = array();
 		if ($submitted) {
+			// retourne les documents transmis
 			foreach ($allDocuments as $doc) {
 				if (in_array($doc, $this->documents->toArray())) {
 					$res[] = $doc;
@@ -205,12 +215,31 @@ class Projets
 			}
 		} else {
 			foreach ($allDocuments as $doc) {
-				if (!in_array($doc, $this->documents->toArray())) {
+				// retourne les documents non transmis
+				if (!in_array($doc, $this->documents->toArray()))
 					$res[] = $doc;
-				}
 			}
 		}
-
 		return $res;
+	}
+
+	// Télecharger tous les documents manquants reliés au projet
+	public function downloadDocuments(FormInterface $form, mixed $notSubmittedDocument, FileUploader $fileUploader) : self {
+		foreach ($notSubmittedDocument as $doc) {
+			// Le nom du fichier client dans le formulaire
+			$brochureFile = $form->get($doc->getId())->getData();
+
+			// Mettre le fichier client dans le serveur si le champ d'upload de fichier était rempli
+			if ($brochureFile) {
+				$fileUploader->upload($brochureFile, [
+					'projet' => $this,
+					'filename' => $doc->getName()
+				]);
+
+				// Mettre à jour le projet en ajoutant le document correspondant
+				$this->addDocument($doc);
+			}
+		}
+		return $this;
 	}
 }

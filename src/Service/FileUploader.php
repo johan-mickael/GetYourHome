@@ -1,10 +1,11 @@
 <?php
 
-// src/Service/FileUploader.php
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Service;
 
-use App\Entity\Projets;
-use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -20,14 +21,14 @@ class FileUploader
 		$this->slugger = $slugger;
 	}
 
+	// Service pour transformer le nom des fichiers clients et le mettre dans le dossier souhaité
 	public function upload(UploadedFile $file, array $options)
 	{
-		$originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-		// this is needed to safely include the file name as part of the URL
+		// cela est nécessaire pour inclure en toute sécurité le nom du fichier dans l'URL
 		$safeFilename = $this->slugger->slug($options['filename']);
 		$newFileName = $safeFilename . '.' . $file->guessExtension();
 
-		// Move the file to the directory where brochures are stored
+		// Déplace le fichier dans le répertoire où sont stockées les documents
 		try {
 			$file->move(
 				$this->getTargetDirectory() . $options['projet']->getDocumentsPath(),
@@ -36,11 +37,6 @@ class FileUploader
 		} catch (FileException $e) {
 			throw $e;
 		}
-
-		// updates the 'filename' property to store the PDF file name
-		// instead of its contents
-		// $product->setfilename($newFilename);
-
 		return $newFileName;
 	}
 

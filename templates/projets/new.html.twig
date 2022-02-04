@@ -3,11 +3,14 @@
 {% block title %}Nouveau Projet{% endblock %}
 
 {% block body %}
-    <h1>Créer un nouveau projet</h1>
 
-    {{ include('projets/_form.html.twig') }}
+<h1>Créer un nouveau projet</h1>
+{% for message in app.flashes('message') %}
+<div class="alert alert-danger text-center">
+	{{ message }}
+</div>
+{% endfor %}
+{{ include('projets/_form.html.twig') }}
 
-    <a class="btn btn-primary" href="{{ path('projets_index') }}">Revenir à la liste</a>
+<a class="btn btn-primary" href="{{ path('projets_index') }}">Revenir à la liste</a>
 {% endblock %}
-
-

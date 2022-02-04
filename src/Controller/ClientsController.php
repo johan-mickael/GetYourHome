@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Controller;
 
 use App\Entity\Clients;
@@ -17,6 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/clients', name: 'clients_')]
 class ClientsController extends AbstractController
 {
+	// Affiche la liste des clients
 	#[Route('/', name: 'index', methods: ['GET'])]
 	public function index(ManagerRegistry $doctrine): Response
 	{
@@ -27,24 +32,25 @@ class ClientsController extends AbstractController
 		]);
 	}
 
+	// Formulaire pour ajouter un nouveau client
 	#[Route('/new', name: 'new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
 	{
 		$client = new Clients();
 		$form = $this->createForm(ClientsType::class, $client);
-
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			$user = new User;
-			$user->setPassword(
+			// Création d'un utilisateur relatif au client
+			$client->setUserOnCreateClient(
+				$form->get('email')->getData(),
+				// Cryptage le mot de passe du client
 				$userPasswordHasher->hashPassword(
-					$user,
+					new User,
 					$form->get('password')->getData()
 				)
 			);
-			$user->setEmail($form->get('email')->getData());
-			$client->setUser($user);
+
 			$entityManager->persist($client);
 			$entityManager->flush();
 
@@ -57,6 +63,7 @@ class ClientsController extends AbstractController
 		]);
 	}
 
+	// Affichage d'un client
 	#[Route('/{id}', name: 'show', methods: ['GET'])]
 	public function show(Clients $client): Response
 	{
@@ -65,6 +72,7 @@ class ClientsController extends AbstractController
 		]);
 	}
 
+	// Modification d'un client
 	#[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
 	public function edit(Request $request, Clients $client, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
 	{
@@ -72,9 +80,16 @@ class ClientsController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			$user = $client->getUser();
-			$user->setEmail($form->get('email')->getData());
-			$client->setUser($user);
+			// Modification des identifiants du client
+			$client->setUserOnCreateClient(
+				$form->get('email')->getData(),
+				// Cryptage le mot de passe du client
+				$userPasswordHasher->hashPassword(
+					new User,
+					$form->get('password')->getData()
+				)
+			);
+
 			$entityManager->flush();
 
 			return $this->redirectToRoute('clients_index');
@@ -86,22 +101,29 @@ class ClientsController extends AbstractController
 		]);
 	}
 
+	// Suppression d'un client
 	#[Route('/{id}', name: 'delete', methods: ['POST', 'DELETE'])]
 	public function delete(Request $request, Clients $client, EntityManagerInterface $entityManager): Response
 	{
+		// Verification de la validité du jeton de l'utilisateur connecté
 		if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
 			try {
 				$entityManager->remove($client);
 				$entityManager->flush();
 			} catch (ForeignKeyConstraintViolationException $ex) {
+				/**
+				 * Levée d'une exception
+				 * Contrainte dans la basee de données sur les clés étrangères
+				 * Un client qui possède des projets ne peut pas être supprimé
+				 * */
 				$this->addFlash(
 					'message',
-					'Impossible de supprimer un client possedant un projet.'
+					'Impossible de supprimer le client car il possède un projet.'
 				);
-				return $this->redirectToRoute('clients_index');
 			}
 		}
 
+		// Redirection vers la liste des clients
 		return $this->redirectToRoute('clients_index');
 	}
 }

@@ -3,9 +3,10 @@
 {% block title %}Nouveau Client{% endblock %}
 
 {% block body %}
-    <h1>Ajouter un Client</h1>
 
-    {{ include('clients/_form.html.twig') }}
+<h1>Ajouter un Client</h1>
 
-    <a class="btn btn-primary" href="{{ path('clients_index') }}">Revenir à la liste</a>
+{{ include('clients/_form.html.twig') }}
+
+<a class="btn btn-primary" href="{{ path('clients_index') }}">Revenir à la liste</a>
 {% endblock %}

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Auteur : Johan Mickaël
+ */
 namespace App\Controller;
 
 use App\Entity\Documents;
@@ -14,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 #[Route('/documents', name:'documents_')]
 class DocumentsController extends AbstractController
 {
+	// Liste des documents
     #[Route('/', name:'index', methods:['GET'])]
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -23,6 +26,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
+	// Ajouter un document
     #[Route('/new', name:'new', methods:['GET','POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -43,6 +47,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
+	// Afficher un document
     #[Route('/{id}', name:'show', methods:['GET'])]
     public function show(Documents $document): Response
     {
@@ -51,6 +56,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
+	// Modifier un document
     #[Route('/{id}/edit', name:'edit', methods:['GET','POST'])]
     public function edit(Request $request, Documents $document, EntityManagerInterface $entityManager): Response
     {
@@ -69,6 +75,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
+	// Supprimer un document
     #[Route('/{id}', name:'delete', methods:['POST', 'DELETE'])]
     public function delete(Request $request, Documents $document, EntityManagerInterface $entityManager): Response
     {

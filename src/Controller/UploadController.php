@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Controller;
 
 use App\Entity\Documents;
@@ -16,35 +20,35 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('projets/upload', name: 'upload_')]
 class UploadController extends AbstractController
 {
+	// Uploader les fichiers manquants du clients
 	#[Route('/{id}', name: 'index', methods: ['GET', 'POST'])]
 	public function index(ManagerRegistry $doctrine, EntityManagerInterface $entityManager, Request $request, Projets $projet, FileUploader $fileUploader): Response
 	{
+		// Tous les documents requis dans un projet
 		$allDocuments = $doctrine->getRepository(Documents::class)->findAll();
-		$notSubmittedDocument = $projet->getSubmittedDocuments($allDocuments, false);
-		if (empty($notSubmittedDocument))
-			return $this->redirectToRoute('projets_index');
 
-		$form = $this->createForm(UploadType::class, [$projet, $notSubmittedDocument]);
+		// Tous les documents qui ne sont pas encore validés / uploader par le client
+		$notSubmittedDocument = $projet->_getDocuments($allDocuments, false);
+
+		// Géneration du formulaire pour uploader tous les documents manquants / non validés du client
+		$form = $this->createForm(UploadType::class, ['projet' => $projet, 'notSubmittedDocuments' => $notSubmittedDocument]);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			foreach ($notSubmittedDocument as $doc) {
-				$brochureFile = $form->get($doc->getId())->getData();
-				if ($brochureFile) {
-					$brochureFileName = $fileUploader->upload($brochureFile, [
-						'projet' => $projet,
-						'filename' => $doc->getName()
-					]);
-					$projet->addDocument($doc);
-				}
-			}
+			// Télechargement des documents manquants reliés au projet du client
+			$projet->downloadDocuments($form, $notSubmittedDocument, $fileUploader);
+
 			$entityManager->persist($projet);
 			$entityManager->flush();
 
+			// Redirection vers la page de récapitulation des fichiers télechargés
 			return $this->render('projets/upload/success.html.twig', [
+				// Le projet relié aux documents
 				'projet' => $projet,
-				'submitted' => $projet->getSubmittedDocuments($allDocuments),
-				'notSubmitted' => $projet->getSubmittedDocuments($allDocuments, false)
+				// Tous les documents télechargés
+				'submitted' => $projet->_getDocuments($allDocuments),
+				// Tous les documents non télechargés
+				'notSubmitted' => $projet->_getDocuments($allDocuments, false)
 			]);
 		}
 

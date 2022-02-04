@@ -1,49 +1,55 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Form;
 
 use App\Entity\Clients;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Security\Core\Security;
 
 class ClientsType extends AbstractType
 {
 	const ACTION = ['ajouter', 'modifier'];
 
+	/**
+	 * Formulaire de création ou de modification d'un client et son compte utilisateur en même temps
+	 * On a la possibilité de créer et modifier le client et son compte dans une seule formulaire
+	 * Le formulaire de la section utilisateur n'est pas mappé à l'entité Client donc on le rajoute manuellement
+	*/
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$authUser = $options["data"];
-		$user = $options["data"]->getUser();
+		/**
+		 * $options['data'] est un objet Client
+		 * $user est l' entité utilisateur associé au client
+		 */
+		$user = $options['data']->getUser();
+
+		// Si $user est nulle c'est qu'on va créer l'utilisateur sinon on va modifier l'utilisateur existant
 		$action = $user ? self::ACTION[1] : self::ACTION[0];
-		$email = strcmp(self::ACTION[1], $action) == 0 ? $options["data"]->getUser()->getEmail() : '';
+
+		// Si $user existe, mettre l'email comme valeur par défaut sur le champ email
+		$email = strcmp(self::ACTION[1], $action) == 0 ? $user->getEmail() : '';
+
+		// Section de formulaire pour l'entité User
 		$builder
 			->add('email', EmailType::class, [
 				'mapped' => false,
 				'required' => true,
 				'data' => $email
 			]);
-		if ($user->isEmployee()) {
-			$builder
-				->add('roles', TextType::class, [
-					'mapped' => false,
-					'required' => true,
-					'data' => $email
-				]);
-		}
-		if (strcmp(self::ACTION[0], $action) == 0)
-			$builder
-				->add('password', PasswordType::class, [
-					'mapped' => false,
-					'required' => true
-				]);
+		$builder
+			->add('password', PasswordType::class, [
+				'mapped' => false,
+			]);
 
+		// Section de formulaire pour l'entité Client
 		$builder
 			->add('nom')
 			->add('prenom')

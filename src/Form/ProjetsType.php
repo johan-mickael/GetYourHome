@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Form;
 
 use App\Entity\Projets;
@@ -15,46 +19,45 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ProjetsType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('nom')
-            ->add('dateDebut', DateType::class, [
-                'widget' => 'single_text'
-            ])
-            ->add('dateFin', DateType::class, [
-                'widget' => 'single_text'
-            ])
-            ->add('client', EntityType::class, [
-                'label' => 'Client',
-                'class' => Clients::class,
-                'choice_label' => function ($client) {
-                    return $client->getDisplayName();
-                }
-            ])
-            ->add('etat', EntityType::class, [
-                'class' => ProjetsEtat::class,
-                'choice_label' => 'libelle'
-            ])
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder
+			->add('nom')
+			->add('dateDebut', DateType::class, [
+				'widget' => 'single_text'
+			])
+			->add('dateFin', DateType::class, [
+				'widget' => 'single_text'
+			])
+			->add('client', EntityType::class, [
+				'label' => 'Client',
+				'class' => Clients::class,
+				'choice_label' => function ($client) {
+					return $client->getDisplayName();
+				}
+			])
+			->add('etat', EntityType::class, [
+				'class' => ProjetsEtat::class,
+				'choice_label' => 'libelle'
+			])
 			->add('documents', EntityType::class, [
-                'class' => Documents::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-            ])
-            ->add('etapes', EntityType::class, [
-                'class' => Etapes::class,
-                'choice_label' => 'libelle',
-                'multiple' => true,
-                'expanded' => true,
-            ])
-        ;
-    }
+				'class' => Documents::class,
+				'choice_label' => 'name',
+				'multiple' => true,
+				'expanded' => true,
+			])
+			->add('etapes', EntityType::class, [
+				'class' => Etapes::class,
+				'choice_label' => 'libelle',
+				'multiple' => true,
+				'expanded' => true,
+			]);
+	}
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Projets::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults([
+			'data_class' => Projets::class,
+		]);
+	}
 }

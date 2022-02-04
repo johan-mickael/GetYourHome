@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Form;
 
 use App\Entity\Etapes;
@@ -9,17 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EtapesType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('libelle')
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder
+			->add('libelle');
+	}
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Etapes::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults([
+			'data_class' => Etapes::class,
+		]);
+	}
 }

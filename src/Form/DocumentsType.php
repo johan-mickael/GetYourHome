@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Form;
 
 use App\Entity\Documents;
@@ -9,17 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DocumentsType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('name')
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder
+			->add('name');
+	}
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Documents::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults([
+			'data_class' => Documents::class,
+		]);
+	}
 }

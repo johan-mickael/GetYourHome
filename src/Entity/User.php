@@ -1,10 +1,13 @@
 <?php
 
+/**
+ * Auteur : Johan Mickaël
+ */
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -157,21 +160,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this;
 	}
 
+	// Verifie si l'utilisateur est un administrateur
 	public function isAdmin(): bool
 	{
-		foreach ($this->roles as $role) {
-			if (strcmp($role, 'ROLE_ADMIN') == 0)
-				return true;
-		}
+		foreach ($this->roles as $role)
+			if (strcmp($role, 'ROLE_ADMIN') == 0) return true;
 		return false;
 	}
 
+	// Verifie si l'utilisateur est un employé
 	public function isEmployee(): bool
 	{
-		foreach ($this->roles as $role) {
-			if (strcmp($role, 'ROLE_EMPLOYEE') == 0 || strcmp($role, 'ROLE_ADMIN') == 0)
-				return true;
-		}
+		foreach ($this->roles as $role)
+			// L'admin est aussi considéré comme étant un employé
+			if (strcmp($role, 'ROLE_EMPLOYEE') == 0 || strcmp($role, 'ROLE_ADMIN') == 0) return true;
 		return false;
 	}
 }

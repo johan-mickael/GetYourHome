@@ -41,8 +41,11 @@ security:
         - { path: ^/projets/[0-9]+/edit, roles: [ROLE_ADMIN, ROLE_EMPLOYEE] }
         - { path: ^/projets/[0-9]+, roles: [ROLE_ADMIN, ROLE_EMPLOYEE], methods: [GET, POST, DELETE] }
         - { path: ^/projets/new, roles: [ROLE_ADMIN, ROLE_EMPLOYEE] }
-        - { path: ^/projets/upload, roles: ROLE_CLIENT }
+        - { path: ^/projets/upload, roles: [ROLE_CLIENT, ROLE_ADMIN] }
         - { path: ^/projets, roles: [ROLE_CLIENT, ROLE_ADMIN, ROLE_EMPLOYEE], methods: [GET] }
+        - { path: ^/register, roles: ROLE_ADMIN, methods: [GET, POST] }
+        - { path: ^/documents, roles: ROLE_ADMIN }
+        - { path: ^/etapes, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
