@@ -61,6 +61,12 @@ class Administrateurs
      */
     private $user;
 
+	public function __construct()
+	{
+		// Initialisation du propriété user pour la création automatique d'un compte pour le client
+		$this->setUser(new User);
+	}
+
     public function getId(): ?int
     {
         return $this->id;
@@ -161,4 +167,17 @@ class Administrateurs
 
         return $this;
     }
+
+	// Création de l'utilisateur associé au client
+	public function setUserOnCreateAdmin(string $email, string $password): self
+	{
+		// Ajout du role
+		$this->user->setRoles(['ROLE_EMPLOYEE']);
+
+		// Assignement des identifiants
+		$this->user->setEmail($email);
+		$this->user->setPassword($password);
+
+		return $this;
+	}
 }

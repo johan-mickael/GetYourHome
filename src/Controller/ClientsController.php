@@ -36,9 +36,7 @@ class ClientsController extends AbstractController
 	{
 		$clients = $doctrine->getRepository(Clients::class)->findAll();
 
-		return $this->render('clients/index.html.twig', [
-			'clients' => $clients,
-		]);
+		return $this->render('clients/index.html.twig', compact('clients'));
 	}
 
 	// Formulaire pour ajouter un nouveau client
@@ -83,7 +81,7 @@ class ClientsController extends AbstractController
 		if(!$this->user->isEmployee() && $this->user !== $client->getUser()) {
 			return $this->redirectToRoute('clients_show', ['id' => $this->user->getClients()->getId()]);
 		}
-		
+
 		return $this->render('clients/show.html.twig', [
 			'client' => $client,
 		]);

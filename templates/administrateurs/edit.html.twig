@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'employé{% endblock %}
+
+{% block body %}
+<a class="btn btn-primary btn-sm" href="{{ path('administrateurs_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la liste</a>
+<hr>
+<div class="float-end">
+	{{ include('administrateurs/_delete_form.html.twig') }}
+</div>
+<h3>Modifier le client</h3>
+{% if app.user.isEmployee() %}
+
+
+{% endif %}
+<div class="border p-3">
+	{{ include('administrateurs/_form.html.twig', {'button_label': 'Modifier'}) }}
+</div>
+
+{% endblock %}

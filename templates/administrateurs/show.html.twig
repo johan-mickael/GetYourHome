@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrateurs{% endblock %}
+
+{% block body %}
+{% if app.user.isEmployee() %}
+<a class="btn btn-primary btn-sm" href="{{ path('administrateurs_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la
+	liste</a>
+<hr>
+<h3>Détails de l'employé</h3>
+{% endif %}
+
+<div class="card mb-4 w-50">
+	<div class="card-body bg-dark text-white">
+		<h5 class="card-title">{{admin.prenom}} {{admin.nom| upper}}</h5>
+	</div>
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item">Naissance: {{ admin.dateNaissance ? admin.dateNaissance|date('l d F Y') : '' }}
+		</li>
+		<li class="list-group-item">Adresse: {{admin.adresse}}</li>
+		<li class="list-group-item">Code postale: {{ admin.codePostale }}</li>
+		<li class="list-group-item">Ville: {{ admin.ville }}</li>
+		<li class="list-group-item">Télephone: {{ admin.telephone }}</li>
+		<li class="list-group-item">Email: {{ admin.user.email }}</li>
+	</ul>
+	{% if app.user.isEmployee() %}
+	<div class="card-body">
+		<a class="btn btn-secondary btn-sm" href="{{ path('administrateurs_edit', {'id': admin.id}) }}"><i
+				class="fas fa-edit"""></i> Modifier</a>
+		{{ include('administrateurs/_delete_form.html.twig') }}
+
+
+	</div>
+	{% endif %}
+</div>
+
+
+
+{% endblock %}

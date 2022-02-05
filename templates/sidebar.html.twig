@@ -28,7 +28,7 @@
 
 					<div class="row">
 						<div class="{{menu_icon_class}}">
-							<i class="fas fa-user"></i>
+							<i class="fas fa-list-alt"></i>
 						</div>
 						<div class="{{menu_item_class}}">
 							<span>Projets</span>
@@ -44,10 +44,24 @@
 
 					<div class="row">
 						<div class="{{menu_icon_class}}">
-							<i class="fas fa-cogs"></i>
+							<i class="fas fa-users"></i>
 						</div>
 						<div class="{{menu_item_class}}">
 							<span>Clients</span>
+						</div>
+					</div>
+				</li>
+			</a>
+			<a href="{{ path('administrateurs_index') }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'administrateurs' %}
+					class="active {{menu_class}}" {% endif %} class="{{menu_class}}">
+
+					<div class="row">
+						<div class="{{menu_icon_class}}">
+							<i class="fas fa-users"></i>
+						</div>
+						<div class="{{menu_item_class}}">
+							<span>Employés</span>
 						</div>
 					</div>
 				</li>
@@ -88,7 +102,7 @@
 
 					<div class="row">
 						<div class="{{menu_icon_class}}">
-							<i class="fas fa-envelope"></i>
+							<i class="fas fa-list"></i>
 						</div>
 						<div class="{{menu_item_class}}">
 							<span>Etapes</span>
@@ -102,10 +116,10 @@
 
 					<div class="row">
 						<div class="{{menu_icon_class}}">
-							<i class="fas fa-plus"></i>
+							<i class="fas fa-users-cog"></i>
 						</div>
 						<div class="{{menu_item_class}}">
-							<span>Employé</span>
+							<span>Administrateur</span>
 						</div>
 					</div>
 				</li>

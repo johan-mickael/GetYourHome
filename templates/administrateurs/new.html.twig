@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel employé{% endblock %}
+
+{% block body %}
+<a class="btn btn-primary btn-sm" href="{{ path('administrateurs_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la
+	liste</a>
+<hr>
+<h3>Ajouter un employé</h3>
+<div class="border p-3">
+	{{ include('administrateurs/_form.html.twig') }}
+</div>
+
+{% endblock %}
