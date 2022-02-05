@@ -1,6 +1,8 @@
 {% set client = app.user.clients %}
-<h1>Vos projets</h1>
-<div class="row" style="justify-content: space-around;">
+
+<div class="row">
+	<h3>Vos projets</h3>
+	<hr>
 	{% for projet in projets %}
 	{% if projet.etat.id is defined and projet.etat.id == 1 %}
 	{% set colorClass = 'text-warning' %}
@@ -9,9 +11,9 @@
 	{% else %}
 	{% set colorClass = 'text-success' %}
 	{% endif %}
-	<div class="card mb-4" style="width: 48%;">
+	<div class="card mb-4 ms-4" style="width: 48%;">
 		<div class="card-body">
-			<h3 class="card-title">{{projet.nom | upper}}</h3>
+			<h4 class="card-title">{{projet.nom | upper}}</h4>
 			<i class="fas fa-circle {{colorClass}}"></i>
 			{% if projet.etat.libelle is defined %}
 			{{ projet.etat.libelle }}
@@ -24,7 +26,7 @@
 		<div class="card-body">
 			{{form(forms['documents'][loop.index -1])}}
 			{% if not done[loop.index -1] %}
-			<a href="{{path('upload_index', {'id' : projet.id})}}" class="btn btn-primary w-50">Ajouter les
+			<a href="{{path('upload_index', {'id' : projet.id})}}" class="btn btn-primary w-50 btn-sm"><i class="fas fa-download"></i> Télecharger les
 				justificatifs manquantes</a>
 			{% endif %}
 			{{form(forms['etapes'][loop.index -1])}}

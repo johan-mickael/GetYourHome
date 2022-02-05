@@ -3,9 +3,14 @@
 {% block title %}{{projet.nom}}{% endblock %}
 
 {% block body %}
-<h1>{{projet.nom}}</h1>
-{{form_start(form)}}
-{{form_widget(form)}}
-<button class="btn btn-primary">{{ 'Transférer' }}</button>
-{{form_end(form)}}
+<a href="{{path('projets_index')}}" class="btn btn-secondary btn-sm"><i class="fas fa-list-alt"></i> Mes projets</a>
+<hr>
+<h3>Téléchargement des documents pour le projet : {{projet.nom | upper}}</h3>
+<div class="border p-3">
+	{{form_start(form)}}
+	{{form_widget(form)}}
+	<button class="btn btn-primary"><i class="fas fa-share"></i> {{ 'Transférer les documents' }}</button>
+	{{form_end(form)}}
+</div>
+
 {% endblock %}

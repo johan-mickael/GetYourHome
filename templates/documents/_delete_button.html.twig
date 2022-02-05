@@ -1,5 +1,5 @@
 <form style="display: contents;" method="post" action="{{ path('documents_delete', {'id': document.id}) }}" onsubmit="return confirm('Etes-vous sur de vouloir supprimer ce document ?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ document.id) }}">
-    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Supprimer</button>
+    <button class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash"></i></button>
 </form>

@@ -20,10 +20,12 @@
 		<h3>Menu</h3>
 		{% if app.user %}
 		<ul class="list-group">
-			<li {% if app.request.attributes.get( '_route' ) starts with 'projets' %} class="active {{menu_class}}" {%
-				endif %} class="{{menu_class}}" {% if app.request.attributes.get( '_route' ) starts with 'clients' %}
-				class="active" {% endif %}>
-				<a href="{{ path('projets_index') }}">
+			<a href="{{ path('projets_index') }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'projets' or
+					app.request.attributes.get( '_route' ) starts with 'upload' %} class="active {{menu_class}}" {%
+					endif %} class="{{menu_class}}" {% if app.request.attributes.get( '_route' ) starts with 'clients'
+					%} class="active" {% endif %}>
+
 					<div class="row">
 						<div class="{{menu_icon_class}}">
 							<i class="fas fa-user"></i>
@@ -32,13 +34,14 @@
 							<span>Projets</span>
 						</div>
 					</div>
-				</a>
-			</li>
+				</li>
+			</a>
 
 			{% if app.user.isEmployee() %}
-			<li {% if app.request.attributes.get( '_route' ) starts with 'clients' %} class="active {{menu_class}}" {%
-				endif %} class="{{menu_class}}">
-				<a href="{{ path('clients_index') }}">
+			<a href="{{ path('clients_index') }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'clients' %} class="active {{menu_class}}"
+					{% endif %} class="{{menu_class}}">
+
 					<div class="row">
 						<div class="{{menu_icon_class}}">
 							<i class="fas fa-cogs"></i>
@@ -47,12 +50,12 @@
 							<span>Clients</span>
 						</div>
 					</div>
-				</a>
-			</li>
+				</li>
+			</a>
 			{% else %}
-			<li {% if app.request.attributes.get( '_route' ) starts with 'employee' %} class="active {{menu_class}}" {%
-				endif %} class="{{menu_class}}">
-				<a href="{{ path('clients_show', {'id': app.user.clients.id}) }}">
+			<a href="{{ path('clients_show', {'id': app.user.clients.id}) }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'clients' %} class="active {{menu_class}}"
+					{% endif %} class="{{menu_class}}">
 					<div class="row">
 						<div class="{{menu_icon_class}}">
 							<i class="fas fa-cogs"></i>
@@ -61,13 +64,14 @@
 							<span>Mon compte</span>
 						</div>
 					</div>
-				</a>
-			</li>
+				</li>
+			</a>
 			{% endif %}
 			{% if app.user.isAdmin() %}
-			<li {% if app.request.attributes.get( '_route' ) starts with 'documents' %} class="active {{menu_class}}" {%
-				endif %} class="{{menu_class}}">
-				<a href="{{ path('documents_index') }}">
+			<a href="{{ path('documents_index') }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'documents' %}
+					class="active {{menu_class}}" {% endif %} class="{{menu_class}}">
+
 					<div class="row">
 						<div class="{{menu_icon_class}}">
 							<i class="fas fa-envelope"></i>
@@ -76,11 +80,12 @@
 							<span>Documents</span>
 						</div>
 					</div>
-				</a>
-			</li>
-			<li {% if app.request.attributes.get( '_route' ) starts with 'etapes' %} class="active {{menu_class}}" {%
-				endif %} class="{{menu_class}}">
-				<a href="{{ path('etapes_index') }}">
+				</li>
+			</a>
+			<a href="{{ path('etapes_index') }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'etapes' %} class="active {{menu_class}}"
+					{% endif %} class="{{menu_class}}">
+
 					<div class="row">
 						<div class="{{menu_icon_class}}">
 							<i class="fas fa-envelope"></i>
@@ -89,11 +94,12 @@
 							<span>Etapes</span>
 						</div>
 					</div>
-				</a>
-			</li>
-			<li {% if app.request.attributes.get( '_route' ) starts with 'app_register' %} class="active {{menu_class}}"
-				{% endif %} class="{{menu_class}}">
-				<a href="{{ path('app_register') }}">
+				</li>
+			</a>
+			<a href="{{ path('app_register') }}">
+				<li {% if app.request.attributes.get( '_route' ) starts with 'app_register' %}
+					class="active {{menu_class}}" {% endif %} class="{{menu_class}}">
+
 					<div class="row">
 						<div class="{{menu_icon_class}}">
 							<i class="fas fa-plus"></i>
@@ -102,8 +108,8 @@
 							<span>Employé</span>
 						</div>
 					</div>
-				</a>
-			</li>
+				</li>
+			</a>
 			{% endif %}
 
 		</ul>

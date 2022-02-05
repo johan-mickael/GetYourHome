@@ -3,12 +3,18 @@
 {% block title %}Modifier un client{% endblock %}
 
 {% block body %}
-<h1>Modifier le client</h1>
-
-{{ include('clients/_form.html.twig', {'button_label': 'Modifier'}) }}
-
+<a class="btn btn-primary btn-sm" href="{{ path('clients_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la liste</a>
+<hr>
+<div class="float-end">
+	{{ include('clients/_delete_form.html.twig') }}
+</div>
+<h3>Modifier le client</h3>
 {% if app.user.isEmployee() %}
-{{ include('clients/_delete_form.html.twig') }}
-<a class="btn btn-primary" href="{{ path('clients_index') }}">Revenir à la liste</a>
+
+
 {% endif %}
+<div class="border p-3">
+	{{ include('clients/_form.html.twig', {'button_label': 'Modifier'}) }}
+</div>
+
 {% endblock %}

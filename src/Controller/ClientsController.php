@@ -17,10 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/clients', name: 'clients_')]
 class ClientsController extends AbstractController
 {
+	// Initialisation des attributs de classe
+	public function __construct(Security $security)
+	{
+		$this->security = $security;
+		// $this->user est l'utilisateur authentifié sur l'application
+		$this->user = $this->security->getUser();
+	}
+
 	// Affiche la liste des clients
 	#[Route('/', name: 'index', methods: ['GET'])]
 	public function index(ManagerRegistry $doctrine): Response
@@ -67,6 +76,14 @@ class ClientsController extends AbstractController
 	#[Route('/{id}', name: 'show', methods: ['GET'])]
 	public function show(Clients $client): Response
 	{
+		/**
+		 * Si le client tente de changer l'id sur l'uri pour voir un autre client, on change l'ID par son propre ID
+		 * On le redirige sur son profil après
+		 * */
+		if(!$this->user->isEmployee() && $this->user !== $client->getUser()) {
+			return $this->redirectToRoute('clients_show', ['id' => $this->user->getClients()->getId()]);
+		}
+		
 		return $this->render('clients/show.html.twig', [
 			'client' => $client,
 		]);

@@ -1,23 +1,42 @@
 @import "~bootstrap/scss/bootstrap";
 @import "commons/_variables";
 @import "commons/sidebar";
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/brands';
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
 
-
-html, body, #main-wrapper {
-    margin:0;
-    height:100%;
+html,
+body,
+#main-wrapper {
+  margin: 0;
+  height: 100%;
 }
 
 .client {
-	color:#f783ac;
+  color: #757575;
 }
-
 
 .table > tbody > tr > td > a:hover {
-	color:$link-table-color-hover;
+  color: $link-table-color-hover;
 }
 
+.delete-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
+}
 
+.show-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: 0;
+}
+
+.edit-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: 0;
+}

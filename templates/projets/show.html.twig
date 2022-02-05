@@ -3,42 +3,43 @@
 {% block title %}Projets{% endblock %}
 
 {% block body %}
-<h1>Projets</h1>
+{% if projet.etat.id is defined and projet.etat.id == 1 %}
+{% set colorClass = 'text-warning' %}
+{% elseif projet.etat.id is defined and projet.etat.id == 2 %}
+{% set colorClass = 'client' %}
+{% else %}
+{% set colorClass = 'text-success' %}
+{% endif %}
+<a class="btn btn-primary btn-sm" href="{{ path('projets_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la liste</a>
+<hr>
+<h3>Détails du projet</h3>
 
-<table class="table">
-	<tbody>
-		<tr>
-			<th>Id</th>
-			<td>{{ projet.id }}</td>
-		</tr>
-		<tr>
-			<th>Nom</th>
-			<td>{{ projet.nom }}</td>
-		</tr>
-		<tr>
-			<th>DateDebut</th>
-			<td>{{ projet.dateDebut ? projet.dateDebut|date('Y-m-d') : '' }}</td>
-		</tr>
-		<tr>
-			<th>DateFin</th>
-			<td>{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : '' }}</td>
-		</tr>
-		<tr>
-			<th>IdEtat</th>
-			<td>{{ projet.etat.libelle }}</td>
-		</tr>
-	</tbody>
-</table>
-<div class="row">
-	<div class="col-md-6">{{form(form['etapes'])}}</div>
-	<div class="col-md-6">{{form(form['documents'])}}</div>
+<div class="card mb-4">
+	<div class="card-body">
+		<h4 class="card-title">{{projet.nom | upper}}</h4>
+		<i class="fas fa-circle {{colorClass}}"></i>
+		{% if projet.etat.libelle is defined %}
+		{{ projet.etat.libelle }}
+		{% endif %}
+	</div>
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item">ID: {{projet.id}}</li>
+		<li class="list-group-item">Début: {{projet.datedebut | date('l d F Y')}}</li>
+		<li class="list-group-item">Fin: {{projet.datefin | date('l d F Y')}}</li>
+	</ul>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-6">{{form(form['etapes'])}}</div>
+			<div class="col-md-6">{{form(form['documents'])}}</div>
+		</div>
+			<a class="btn btn-secondary btn-sm" href="{{ path('projets_edit', {'id': projet.id}) }}"><i class="fas fa-edit"></i> Modifier</a>
+			{{ include('projets/_delete_form.html.twig') }}
+
+	</div>
 </div>
 
 
 
-<a class="btn btn-primary" href="{{ path('projets_index') }}">Revenir à la liste</a>
 
-<a class="btn btn-warning" href="{{ path('projets_edit', {'id': projet.id}) }}">Modifier</a>
 
-{{ include('projets/_delete_form.html.twig') }}
 {% endblock %}

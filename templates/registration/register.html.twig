@@ -3,9 +3,9 @@
 {% block title %}Employé{% endblock %}
 
 {% block body %}
-
+<h3>Nouvel employé</h3>
 <div class="border p-4 w-50">
-	<h3>Ajouter un employé</h3>
+
 	{{ form_start(registrationForm) }}
 	<label>Email</label>
 	{{ form_widget(registrationForm.email) }}
@@ -13,7 +13,7 @@
 	<label>Mot de passe</label>
 	{{ form_widget(registrationForm.plainPassword) }}
 	{{ form_errors(registrationForm.plainPassword) }}
-	<button type="submit" class="mt-2 btn btn-primary">Ajouter</button>
+	<button type="submit" class="mt-2 btn btn-primary"><i class="fas fa-plus"></i> Ajouter</button>
 	{{ form_end(registrationForm) }}
 </div>
 

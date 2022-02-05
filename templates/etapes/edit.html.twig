@@ -3,11 +3,17 @@
 {% block title %}Modifier une Etape{% endblock %}
 
 {% block body %}
-    <h1>Modifier une Etapes</h1>
+<div class="float-end">
+	{{ include('etapes/_delete_form.html.twig') }}
+</div>
+<a class="btn btn-primary btn-sm" href="{{ path('etapes_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la
+	liste</a>
+<hr>
+<h3>Modification de l'étape</h3>
+<div class="border p-3">
+	{{ include('etapes/_form.html.twig', {'button_label': 'Modifier'}) }}
+</div>
 
-    {{ include('etapes/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a class="btn btn-primary" href="{{ path('etapes_index') }}">Revenir à la liste</a>
 
-    {{ include('etapes/_delete_form.html.twig') }}
 {% endblock %}

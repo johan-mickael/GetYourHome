@@ -3,24 +3,18 @@
 {% block title %}Etapes{% endblock %}
 
 {% block body %}
-    <h1>Etapes</h1>
+<a class="btn btn-primary btn-sm" href="{{ path('etapes_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la liste</a>
+<hr>
+<div class="float-end">
+	{{ include('etapes/_delete_form.html.twig') }}
+</div>
+<h3>Détails de l'étape</h3>
+<div class="card">
+	<h5 class="card-header">{{ etape.libelle }}</h5>
+	<div class="card-body">
+		<a class="btn btn-secondary btn-sm" href="{{ path('etapes_edit', {'id': etape.id}) }}"><i class="fas fa-edit"></i> Modifier</a>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ etape.id }}</td>
-            </tr>
-            <tr>
-                <th>Libelle</th>
-                <td>{{ etape.libelle }}</td>
-            </tr>
-        </tbody>
-    </table>
+	</div>
+</div>
 
-    <a class="btn btn-primary" href="{{ path('etapes_index') }}">Revenir à la liste</a>
-
-    <a class="btn btn-warning" href="{{ path('etapes_edit', {'id': etape.id}) }}">Modifier</a>
-
-    {{ include('etapes/_delete_form.html.twig') }}
 {% endblock %}

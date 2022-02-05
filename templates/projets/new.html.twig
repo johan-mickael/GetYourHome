@@ -3,14 +3,19 @@
 {% block title %}Nouveau Projet{% endblock %}
 
 {% block body %}
-
-<h1>Créer un nouveau projet</h1>
-{% for message in app.flashes('message') %}
-<div class="alert alert-danger text-center">
-	{{ message }}
+<a class="btn btn-primary btn-sm" href="{{ path('projets_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la
+	liste</a>
+<hr>
+<h3>Créer un projet</h3>
+<div class="border p-3">
+	{% for message in app.flashes('message') %}
+	<div class="alert alert-danger text-center text-small">
+		{{ message }}
+	</div>
+	{% endfor %}
+	{{ include('projets/_form.html.twig') }}
 </div>
-{% endfor %}
-{{ include('projets/_form.html.twig') }}
 
-<a class="btn btn-primary" href="{{ path('projets_index') }}">Revenir à la liste</a>
+
+
 {% endblock %}

@@ -3,10 +3,12 @@
 {% block title %}Nouveau Client{% endblock %}
 
 {% block body %}
+<a class="btn btn-primary btn-sm" href="{{ path('clients_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la
+	liste</a>
+<hr>
+<h3>Ajouter un Client</h3>
+<div class="border p-3">
+	{{ include('clients/_form.html.twig') }}
+</div>
 
-<h1>Ajouter un Client</h1>
-
-{{ include('clients/_form.html.twig') }}
-
-<a class="btn btn-primary" href="{{ path('clients_index') }}">Revenir à la liste</a>
 {% endblock %}

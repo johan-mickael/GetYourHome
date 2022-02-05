@@ -3,56 +3,39 @@
 {% block title %}Clients{% endblock %}
 
 {% block body %}
-<h1>Clients</h1>
-
-<table class="table">
-	<tbody>
-		<tr>
-			<th>Id</th>
-			<td>{{ client.id }}</td>
-		</tr>
-		<tr>
-			<th>Nom</th>
-			<td>{{ client.nom }}</td>
-		</tr>
-		<tr>
-			<th>Prenom</th>
-			<td>{{ client.prenom }}</td>
-		</tr>
-		<tr>
-			<th>DateNaissance</th>
-			<td>{{ client.dateNaissance ? client.dateNaissance|date('Y-m-d') : '' }}</td>
-		</tr>
-		<tr>
-			<th>Adresse</th>
-			<td>{{ client.adresse }}</td>
-		</tr>
-		<tr>
-			<th>CodePostale</th>
-			<td>{{ client.codePostale }}</td>
-		</tr>
-		<tr>
-			<th>Ville</th>
-			<td>{{ client.ville }}</td>
-		</tr>
-		<tr>
-			<th>Telephone</th>
-			<td>{{ client.telephone }}</td>
-		</tr>
-		<tr>
-			<th>Email</th>
-			<td>{{ client.user.email }}</td>
-		</tr>
-	</tbody>
-</table>
-
-
-<a class="btn btn-warning" href="{{ path('clients_edit', {'id': client.id}) }}">Modifier</a>
 {% if app.user.isEmployee() %}
-
-{{ include('clients/_delete_form.html.twig') }}
-<a class="btn btn-primary" href="{{ path('clients_index') }}">Revenir à la liste</a>
+<a class="btn btn-primary btn-sm" href="{{ path('clients_index') }}"><i class="fas fa-arrow-left"></i> Revenir à la
+	liste</a>
+<hr>
+<h3>Détails du client</h3>
 {% endif %}
+
+<div class="card mb-4 w-50">
+	<div class="card-body bg-dark text-white">
+		<h5 class="card-title">{{client.prenom}} {{client.nom| upper}}</h5>
+	</div>
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item">Naissance: {{ client.dateNaissance ? client.dateNaissance|date('l d F Y') : '' }}
+		</li>
+		<li class="list-group-item">Adresse: {{client.adresse}}</li>
+		<li class="list-group-item">Code postale: {{ client.codePostale }}</li>
+		<li class="list-group-item">Ville: {{ client.ville }}</li>
+		<li class="list-group-item">Télephone: {{ client.telephone }}</li>
+		<li class="list-group-item">Email: {{ client.user.email }}</li>
+	</ul>
+	{% if app.user.isEmployee() %}
+	<div class="card-body">
+
+
+		<a class="btn btn-secondary btn-sm" href="{{ path('clients_edit', {'id': client.id}) }}"><i
+				class="fas fa-edit"""></i> Modifier</a>
+		{{ include('clients/_delete_form.html.twig') }}
+
+
+	</div>
+	{% endif %}
+</div>
+
 
 
 {% endblock %}

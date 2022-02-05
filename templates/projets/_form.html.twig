@@ -1,5 +1,5 @@
-{{ form_start(form) }}
-    {{ form_row(form.nom) }}
+<form method="post" style="display: contents;">
+	{{ form_row(form.nom) }}
 	{{ form_row(form.dateDebut) }}
 	{{ form_row(form.dateFin) }}
 	{{ form_row(form.client) }}
@@ -8,15 +8,15 @@
 		<div class="col-md-6">{{ form_row(form.etapes) }}</div>
 		<div class="col-md-6">{{ form_row(form.documents) }}</div>
 	</div>
-    <div class="text-center">
-    	<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+	<button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i>{{ button_label|default('Enregistrer')
+		}}</button>
 	</div>
-{{ form_end(form) }}
+</form>
 
 {% block javascript %}
 <script>
-    jQuery(function () {
-        $('#projets_dateFin').attr('required', false);
-     });
+	jQuery(function () {
+		$('#projets_dateFin').attr('required', false);
+	});
 </script>
 {% endblock %}
