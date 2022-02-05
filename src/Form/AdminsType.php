@@ -7,7 +7,7 @@
 namespace App\Form;
 
 use App\Entity\Administrateurs;
-use App\Entity\Clients;
+use App\Entity\employés;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,15 +20,15 @@ class AdminsType extends AbstractType
 	const ACTION = ['ajouter', 'modifier'];
 
 	/**
-	 * Formulaire de création ou de modification d'un client et son compte utilisateur en même temps
-	 * On a la possibilité de créer et modifier le client et son compte dans une seule formulaire
-	 * Le formulaire de la section utilisateur n'est pas mappé à l'entité Client donc on le rajoute manuellement
+	 * Formulaire de création ou de modification d'un employé et son compte utilisateur en même temps
+	 * On a la possibilité de créer et modifier le employé et son compte dans une seule formulaire
+	 * Le formulaire de la section utilisateur n'est pas mappé à l'entité employé donc on le rajoute manuellement
 	*/
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		/**
-		 * $options['data'] est un objet Client
-		 * $user est l' entité utilisateur associé au client
+		 * $options['data'] est un objet employé
+		 * $user est l' entité utilisateur associé au employé
 		 */
 		$user = $options['data']->getUser();
 
@@ -50,7 +50,7 @@ class AdminsType extends AbstractType
 				'mapped' => false,
 			]);
 
-		// Section de formulaire pour l'entité Client
+		// Section de formulaire pour l'entité employé
 		$builder
 			->add('nom')
 			->add('prenom')

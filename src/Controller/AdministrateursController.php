@@ -33,7 +33,7 @@ class AdministrateursController extends AbstractController
 		return $this->render('administrateurs/index.html.twig', compact('admins'));
 	}
 
-	// Formulaire pour ajouter un nouveau client
+	// Formulaire pour ajouter un nouveau employé
 	#[Route('/new', name: 'new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
 	{
@@ -42,10 +42,10 @@ class AdministrateursController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			// Création d'un utilisateur relatif au client
+			// Création d'un utilisateur relatif au employé
 			$admin->setUserOnCreateAdmin(
 				$form->get('email')->getData(),
-				// Cryptage le mot de passe du client
+				// Cryptage le mot de passe du employé
 				$userPasswordHasher->hashPassword(
 					new User,
 					$form->get('password')->getData()
@@ -64,7 +64,7 @@ class AdministrateursController extends AbstractController
 		]);
 	}
 
-	// Affichage d'un client
+	// Affichage d'un employé
 	#[Route('/{id}', name: 'show', methods: ['GET'])]
 	public function show(Administrateurs $admin): Response
 	{
@@ -73,7 +73,7 @@ class AdministrateursController extends AbstractController
 		]);
 	}
 
-	// Modification d'un client
+	// Modification d'un employé
 	#[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
 	public function edit(Request $request, Administrateurs $admin, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
 	{
@@ -81,10 +81,10 @@ class AdministrateursController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			// Modification des identifiants du client
+			// Modification des identifiants du employé
 			$admin->setUserOnCreateAdmin(
 				$form->get('email')->getData(),
-				// Cryptage le mot de passe du client
+				// Cryptage le mot de passe du employé
 				$userPasswordHasher->hashPassword(
 					new User,
 					$form->get('password')->getData()
@@ -102,7 +102,7 @@ class AdministrateursController extends AbstractController
 		]);
 	}
 
-	// Suppression d'un client
+	// Suppression d'un employé
 	#[Route('/{id}', name: 'delete', methods: ['POST', 'DELETE'])]
 	public function delete(Request $request, Administrateurs $admin, EntityManagerInterface $entityManager): Response
 	{
@@ -112,7 +112,7 @@ class AdministrateursController extends AbstractController
 			$entityManager->flush();
 		}
 
-		// Redirection vers la liste des clients
+		// Redirection vers la liste des employés
 		return $this->redirectToRoute('administrateurs_index');
 	}
 }

@@ -63,7 +63,7 @@ class Administrateurs
 
 	public function __construct()
 	{
-		// Initialisation du propriété user pour la création automatique d'un compte pour le client
+		// Initialisation du propriété user pour la création automatique d'un compte pour l'employé
 		$this->setUser(new User);
 	}
 
@@ -168,7 +168,7 @@ class Administrateurs
         return $this;
     }
 
-	// Création de l'utilisateur associé au client
+	// Création de l'utilisateur associé è l'employé
 	public function setUserOnCreateAdmin(string $email, string $password): self
 	{
 		// Ajout du role
