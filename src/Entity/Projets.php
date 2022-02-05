@@ -115,6 +115,9 @@ class Projets
 
 	public function setDateFin(?\DateTimeInterface $dateFin): self
 	{
+		// La date fin n'est pas requis
+		if ($dateFin == null)
+			return $this;
 		// Verification si la date de fin du projet est valide par rapport à la date du début du projet
 		if ($this->dateDebut > $dateFin)
 			throw new Exception("La date de fin du projet doit être supérieure à la date de début");
@@ -224,7 +227,8 @@ class Projets
 	}
 
 	// Télecharger tous les documents manquants reliés au projet
-	public function downloadDocuments(FormInterface $form, mixed $notSubmittedDocument, FileUploader $fileUploader) : self {
+	public function downloadDocuments(FormInterface $form, mixed $notSubmittedDocument, FileUploader $fileUploader): self
+	{
 		foreach ($notSubmittedDocument as $doc) {
 			// Le nom du fichier client dans le formulaire
 			$brochureFile = $form->get($doc->getId())->getData();

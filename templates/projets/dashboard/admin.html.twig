@@ -29,8 +29,8 @@
 				{% endif %}
 			</td>
 			<td class="fw-bold">{{ projet.nom | upper }}</td>
-			<td class="text-center">{{ projet.dateDebut ? projet.dateDebut|date('Y-m-d') : '' }}</td>
-			<td class="text-center">{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : '' }}</td>
+			<td class="text-center">{{ projet.dateDebut ? projet.dateDebut|date('Y-m-d') : ' - ' }}</td>
+			<td class="text-center">{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : ' - ' }}</td>
 			<td>{{ projet.client.nom }} {{ projet.client.prenom }}</td>
 			<td class="text-center">
 				<div class="btn-group" role="group" aria-label="Basic example">

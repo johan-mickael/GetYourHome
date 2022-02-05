@@ -118,7 +118,6 @@ class ProjetsController extends AbstractController
 	{
 		$form = $this->createForm(ProjetsType::class, $projet);
 		$form->handleRequest($request);
-
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->flush();
 			return $this->redirectToRoute('projets_edit', ['id' => $projet->getId()]);
